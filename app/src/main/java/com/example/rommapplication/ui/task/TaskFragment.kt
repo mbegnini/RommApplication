@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rommapplication.R
 import com.example.rommapplication.TaskApplication
@@ -31,26 +32,27 @@ class TaskFragment: Fragment(R.layout.fragment_task), TaskAdapter.OnItemClickLis
                 setHasFixedSize(true)
             }
             fabAddTask.setOnClickListener {
-                //TODO
+                val action = TaskFragmentDirections.actionTaskFragmentToAddEditTaskFragment()
+                findNavController().navigate(action)
             }
         }
 
         taskViewModel.allTasks.observe(viewLifecycleOwner) {
             taskAdapter.submitList(it)
         }
-
     }
 
     override fun onItemClickListener(task: Task) {
-
+        val action = TaskFragmentDirections.actionTaskFragmentToAddEditTaskFragment(task)
+        findNavController().navigate(action)
     }
 
     override fun onCheckBoxClickListener(task: Task, isChecked: Boolean) {
-
+        taskViewModel.onTaskCheckedChanged(task, isChecked)
     }
 
     override fun onDeleteClickListener(task: Task) {
-
+        taskViewModel.delete(task)
     }
 
 }

@@ -24,6 +24,10 @@ class TaskViewModel(private val taskRepository: TaskRepository): ViewModel() {
         taskRepository.deleteAll()
     }
 
+    fun onTaskCheckedChanged(task: Task, isChecked:Boolean) = viewModelScope.launch {
+        taskRepository.update(task.copy(complete = isChecked))
+    }
+
     class TaskViewModelFactory(private val taskRepository: TaskRepository) : ViewModelProvider.Factory {
 
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
